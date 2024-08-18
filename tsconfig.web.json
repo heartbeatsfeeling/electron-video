@@ -9,6 +9,14 @@
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
