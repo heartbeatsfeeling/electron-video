@@ -12,6 +12,9 @@ body, #root{
   background-color: #1c1c26;
   height: 100vh;
 }
+.text-center{
+  text-align: center;
+}
 .wrapper{
   display: flex;
   height: 100vh;
@@ -45,8 +48,10 @@ body, #root{
     }
   }
   .resource-menu {
+    padding: 20px 16px;
     width:  200px;
     background-color: rgb(39, 40, 54);
+    text-align: center;
   }
   .content {
     flex: 1;

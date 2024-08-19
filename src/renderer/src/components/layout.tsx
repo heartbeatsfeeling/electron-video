@@ -1,9 +1,10 @@
-import { Card, IconButton } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import { Fragment } from 'react'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TransformIcon from '@mui/icons-material/Transform'
+import MetaData from './meta-data'
 
 export default function Layout () {
   return (
@@ -39,7 +40,7 @@ export default function Layout () {
           </ul>
         </div>
         <div className="resource-menu">
-          <Card>test</Card>
+          <MetaData />
         </div>
         <div className='content'>
           <Outlet />
