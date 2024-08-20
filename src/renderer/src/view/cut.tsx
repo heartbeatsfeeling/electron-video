@@ -3,7 +3,6 @@ import Slider, { SliderThumb } from '@mui/material/Slider'
 
 export default function Cut () {
   const timelineRef = useRef<null | HTMLDivElement>(null)
-  console.log(timelineRef)
   const [step, setStep] = useState(5)
   const [timeline, setTimeline] = useState<number[]>([])
   const [time, setTime] = useState([0, 100])

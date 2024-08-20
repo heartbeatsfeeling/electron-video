@@ -11,7 +11,7 @@ const router: any = createBrowserRouter([{
       element: <Cut />
     },
     {
-      path: 'cut',
+      path: 'text',
       element: <span>test</span>
     },
     {
