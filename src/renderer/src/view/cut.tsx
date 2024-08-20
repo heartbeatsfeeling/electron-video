@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Slider, { SliderThumb } from '@mui/material/Slider'
+import Player from '@renderer/components/player'
 
 export default function Cut () {
   const timelineRef = useRef<null | HTMLDivElement>(null)
@@ -33,7 +34,7 @@ export default function Cut () {
     return (
       <SliderThumb {...other}>
         {children}
-        cleft111aaaa
+        a
         <span className="airbnb-bar" />
         <span className="airbnb-bar" />
         <span className="airbnb-bar" />
@@ -44,9 +45,9 @@ export default function Cut () {
   return (
     <div className="cut">
       <div className="top">
-        <div className="video">
-          <video controls src="http://vjs.zencdn.net/v/oceans.mp4"></video>
-        </div>
+        <Player
+          url='http://vjs.zencdn.net/v/oceans.mp4'
+        />
       </div>
       <div className="bottom">
         <div className="time-line" ref={timelineRef}>
