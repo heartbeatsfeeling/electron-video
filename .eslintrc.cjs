@@ -11,5 +11,9 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off'
+  },
+  env: {
+    browser: true,
+    es2021: true
   }
 }

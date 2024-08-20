@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Layout from '../components/layout'
+import Cut from '../view/cut'
 
 const router: any = createBrowserRouter([{
   path: '/',
@@ -7,7 +8,7 @@ const router: any = createBrowserRouter([{
   children: [
     {
       index: true,
-      element: <span>test</span>
+      element: <Cut />
     },
     {
       path: 'cut',
