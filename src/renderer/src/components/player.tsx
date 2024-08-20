@@ -19,7 +19,6 @@ export default function VPlayer ({ url } : Props) {
         }]
       })
     }
-    console.log(url, videoRef.current)
     return () => {
       if (playerRef.current) {
         playerRef.current = null
