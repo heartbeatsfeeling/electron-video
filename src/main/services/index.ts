@@ -1,5 +1,5 @@
 import { app, dialog } from 'electron'
-import { existsSync, mkdirSync, statSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs'
 import { MAX_FILE_SIZE } from '../../config/config'
 import ffmpeg from 'fluent-ffmpeg'
 import ffmpegPath from 'ffmpeg-static'
@@ -12,19 +12,7 @@ ffmpeg.setFfprobePath(ffprobePath.path)
  * 选择文体
  * @returns Promise<Electron.OpenDialogReturnValue>
  */
-export async function selectFile () {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
-    title: '选择一个视频文件',
-    filters: [
-      { name: 'Videos', extensions: ['mp4', 'mkv', 'avi', 'mov'] }
-    ],
-    properties: ['openFile']
-  })
-  console.time('选文件')
-  if (canceled) {
-    return null
-  }
-  const filePath = filePaths[0]
+export async function selectFile (filePath: string) {
   const fileSizeInBytes = statSync(filePath).size
   const maxSizeInBytes = MAX_FILE_SIZE
   if (fileSizeInBytes > maxSizeInBytes) {
@@ -49,7 +37,7 @@ export async function selectFile () {
   })
   console.timeEnd('信息获取')
   console.time('生成图')
-  const files = await Promise.all(
+  const files = await Promise.all<Promise<string>[]>(
     new Array(12).fill(0).map((_, index) => (new Promise((_resolve, reject) => {
       const filename = `thumbnail-at-${(index + 1).toString().padStart(4, '0')}.jpg`
       const timemarks = [`${(100 / 12) * index}%`]
@@ -72,7 +60,7 @@ export async function selectFile () {
   )
   console.timeEnd('生成图')
   console.time('合图')
-  const readVideo = await new Promise((_resolve, reject) => {
+  const readVideo = await new Promise<{ bgImage: string }>((_resolve, reject) => {
     const command = ffmpeg()
     files.forEach(file => {
       command.input(file)
@@ -84,7 +72,6 @@ export async function selectFile () {
       .on('end', () => {
         console.log('Montage created successfully!')
         _resolve({
-          files,
           bgImage
         })
       })
@@ -96,8 +83,8 @@ export async function selectFile () {
   })
   console.timeEnd('合图')
   return {
-    filePath,
-    metadata,
-    ...(readVideo || {})
+    video: readFileSync(filePath),
+    image: readFileSync(files[1]),
+    bgImage: readFileSync(readVideo.bgImage)
   }
 }

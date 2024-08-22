@@ -152,3 +152,9 @@ body, #root{
     padding: 0;
   }
 }
+.no-data, .building{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

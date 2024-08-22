@@ -1,8 +1,15 @@
 import { create } from 'zustand'
 
-const useBearStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 })
+interface State {
+  building: boolean
+  bgImage: string
+  videoPath: string
+  setBuilding: (f: boolean) => void
+}
+const useMainStore = create<State>((set) => ({
+  bgImage: '',
+  videoPath: '',
+  building: false,
+  setBuilding: (f) => set((state) => ({ building: f }))
 }))
-export default useBearStore
+export default useMainStore
