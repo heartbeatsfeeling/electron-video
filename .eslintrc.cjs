@@ -11,7 +11,8 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   },
   env: {
     browser: true,

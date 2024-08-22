@@ -1,6 +1,7 @@
-import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined'
-import { Button } from '@mui/material'
 import { ServicesDialog } from '@/config/enum'
+import Avatar from '@mui/material/Avatar'
+import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined'
+import CloudUploadSharpIcon from '@mui/icons-material/CloudUploadSharp'
 
 export default function MetaData () {
   async function handleFile () {
@@ -8,15 +9,14 @@ export default function MetaData () {
     console.log(res)
   }
   return (
-    <div className='text-center'>
-      <Button
-        fullWidth
-        variant="contained"
-        startIcon={<DriveFolderUploadOutlinedIcon />}
+    <div className='text-center upload-area'>
+      <Avatar
+        sx={{ width: 36, height: 36 }}
+        className='has-file'
         onClick={handleFile}
       >
-        选择视频文件
-      </Button>
+        <CloudUploadSharpIcon />
+      </Avatar>
     </div>
   )
 }

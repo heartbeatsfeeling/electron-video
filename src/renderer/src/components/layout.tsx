@@ -12,8 +12,9 @@ export default function Layout () {
       <header></header>
       <div className='wrapper'>
         <div className="lnb">
+          <MetaData />
           <ul>
-            <li>
+            <li className='active'>
               <IconButton aria-label="delete">
                 <div>
                   <ContentCutIcon />
@@ -21,7 +22,7 @@ export default function Layout () {
                 </div>
               </IconButton>
             </li>
-            <li className='active'>
+            {/* <li className='active'>
               <IconButton aria-label="delete">
                 <div>
                   <TextFieldsIcon />
@@ -36,11 +37,8 @@ export default function Layout () {
                   <div className='text'>转码</div>
                 </div>
               </IconButton>
-            </li>
+            </li> */}
           </ul>
-        </div>
-        <div className="resource-menu">
-          <MetaData />
         </div>
         <div className='content'>
           <Outlet />

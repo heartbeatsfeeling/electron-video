@@ -19,39 +19,47 @@ body, #root{
   display: flex;
   height: 100vh;
   .lnb{
-    background-color: rgb(28, 28, 38);
+    background-color: rgb(39, 40, 54);
     padding: 20px 8px;
     text-align: center;
     color: #fff;
-    li{
+    .upload-area{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .MuiAvatar-root{
+        cursor: pointer;
+        &.has-file{
+          border: 1px solid #fff;;
+        }
+      }
+    }
+    ul{
       margin-top: 16px;
-      height: 52px;
-      width: 52px;
-      &:first-child{
-        margin-top: 0px;
+      li{
+        margin-top: 16px;
+        height: 52px;
+        width: 52px;
+        &:first-child{
+          margin-top: 0px;
+        }
+        .MuiButtonBase-root{
+          padding: 4px 0;
+        }
       }
-      .MuiButtonBase-root{
-        padding: 4px 0;
+      .active {
+        background-color: rgb(28, 28, 38);
+        border-radius: 10px;
+      }
+      .MuiSvgIcon-root{
+        color: #fff;
+        font-size: 18px;
+      }
+      .text{
+        font-size: 12px;
+        color: #fff;
       }
     }
-    .active {
-      background-color: rgb(39, 40, 54);
-      border-radius: 10px;
-    }
-    .MuiSvgIcon-root{
-      color: #fff;
-      font-size: 18px;
-    }
-    .text{
-      font-size: 12px;
-      color: #fff;
-    }
-  }
-  .resource-menu {
-    padding: 20px 16px;
-    width:  200px;
-    background-color: rgb(39, 40, 54);
-    text-align: center;
   }
   .content {
     flex: 1;
