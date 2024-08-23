@@ -1,10 +1,10 @@
 import { app, dialog } from 'electron'
-import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs'
-import { MAX_FILE_SIZE } from '../../config/config'
+import { copyFileSync, existsSync, mkdirSync, statSync } from 'node:fs'
+import { HOST, MAX_FILE_SIZE, PORT, TEMP_DIR } from '../../config/config'
 import ffmpeg from 'fluent-ffmpeg'
 import ffmpegPath from 'ffmpeg-static'
 import ffprobePath from 'ffprobe-static'
-import { join } from 'node:path'
+import { basename, join } from 'node:path'
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath.path)
@@ -19,14 +19,13 @@ export async function selectFile (filePath: string) {
     dialog.showErrorBox('错误', '文件过大或类型不支持')
     return null
   }
-  const tempDir = 'video_tempDir'
-  const appDir = join(app.getPath('userData'), tempDir)
+  const appDir = join(app.getPath('userData'), TEMP_DIR)
   const bgImage = join(appDir, 'gb.png')
   if (!existsSync(appDir)) {
     mkdirSync(appDir)
   }
   console.time('信息获取')
-  const metadata = await new Promise((resolve, reject) => {
+  const metadata: any = await new Promise((resolve, reject) => {
     ffmpeg.ffprobe(filePath, (err, metadata) => {
       if (err) {
         reject(err)
@@ -53,14 +52,14 @@ export async function selectFile (filePath: string) {
           timemarks,
           filename,
           folder: appDir,
-          size: '320x?',
+          size: '130x?',
           quality: 32
         })
     })))
   )
   console.timeEnd('生成图')
   console.time('合图')
-  const readVideo = await new Promise<{ bgImage: string }>((_resolve, reject) => {
+  await new Promise<{ bgImage: string }>((_resolve, reject) => {
     const command = ffmpeg()
     files.forEach(file => {
       command.input(file)
@@ -82,9 +81,12 @@ export async function selectFile (filePath: string) {
       .run()
   })
   console.timeEnd('合图')
+  copyFileSync(filePath, join(appDir, basename(filePath)))
   return {
-    video: readFileSync(filePath),
-    image: readFileSync(files[1]),
-    bgImage: readFileSync(readVideo.bgImage)
+    duration: metadata.format.duration,
+    size: metadata.format.size,
+    video: `${HOST}:${PORT}/files/${basename(filePath)}?t=${Date.now()}`,
+    image: `${HOST}:${PORT}/files/${basename(files[1])}?t=${Date.now()}`,
+    bgImage: `${HOST}:${PORT}/files/${basename(bgImage)}?t=${Date.now()}`
   }
 }

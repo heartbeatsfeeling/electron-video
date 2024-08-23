@@ -10,12 +10,13 @@ export default function MetaData () {
     if (filePath) {
       mainStore.setBuilding(true)
       const res = await window.electron.ipcRenderer.invoke(FileServices.decodeFile, filePath)
-      const videoUrl = URL.createObjectURL(new Blob([res.video], { type: 'application/octet-stream' }))
-      const imageUrl = URL.createObjectURL(new Blob(res.image, { type: 'image/jpg' }))
-      const bgImageUrl = URL.createObjectURL(new Blob([res.bgImage], { type: 'application/octet-stream' }))
-      console.log(
-        imageUrl
-      )
+      console.log(res.duration)
+      if (res) {
+        mainStore.setVideoPath(res.video)
+        mainStore.setImage(res.image)
+        mainStore.setBgImage(res.bgImage)
+        mainStore.setDuration(res.duration)
+      }
       mainStore.setBuilding(false)
     }
   }
@@ -25,6 +26,7 @@ export default function MetaData () {
         sx={{ width: 36, height: 36 }}
         className='has-file'
         onClick={handleFile}
+        src={mainStore.image ? mainStore.image : undefined}
       >
         <CloudUploadSharpIcon />
       </Avatar>
