@@ -2,6 +2,7 @@ import { FileServices, FileServicesDialog } from '@/config/enum'
 import Avatar from '@mui/material/Avatar'
 import CloudUploadSharpIcon from '@mui/icons-material/CloudUploadSharp'
 import useMainStore from '@renderer/store'
+import { Badge } from '@mui/material'
 
 export default function MetaData () {
   const mainStore = useMainStore()
@@ -22,14 +23,35 @@ export default function MetaData () {
   }
   return (
     <div className='text-center upload-area'>
-      <Avatar
-        sx={{ width: 36, height: 36 }}
-        className='has-file'
-        onClick={handleFile}
-        src={mainStore.image ? mainStore.image : undefined}
-      >
-        <CloudUploadSharpIcon />
-      </Avatar>
+      {mainStore.image ? (
+        <Badge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          badgeContent={
+            <Avatar
+              sx={{ width: 20, height: 20 }}
+              className='has-file'
+            >
+              <CloudUploadSharpIcon style={{ fontSize: '14px' }}/>
+            </Avatar>
+          }
+          onClick={handleFile}
+        >
+          <Avatar
+            sx={{ width: 36, height: 36 }}
+            className='has-file'
+            src={mainStore.image}
+          />
+        </Badge>
+      ) : (
+        <Avatar
+          sx={{ width: 36, height: 36 }}
+          className='has-file'
+          onClick={handleFile}
+        >
+          <CloudUploadSharpIcon />
+        </Avatar>
+      )}
     </div>
   )
 }
