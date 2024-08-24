@@ -9,7 +9,7 @@ ul, li{
   box-sizing: border-box;
 }
 body, #root{
-  background-color: #1c1c26;
+  background-color: #404a56;
   height: 100vh;
 }
 .text-center{
@@ -64,6 +64,7 @@ body, #root{
   .content {
     flex: 1;
     color: #fff;
+    padding: 8px;
     .cut{
       display: flex;
       flex-direction: column;
@@ -76,10 +77,23 @@ body, #root{
         background-color: #1c1c26;
       }
       .bottom {
+        display: flex;
+        flex-direction: column;
         height: 240px;
         border-top:  1px solid #272836;
         background-color: #17171e;
-        padding: 0 20px;
+        .time-line{
+          padding: 0 20px;
+          flex: 1;
+        }
+        .action{
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding-top: 8px;
+          height: 40px;
+          background-color: #404a56
+        }
       }
     }
   }

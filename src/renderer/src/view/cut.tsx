@@ -1,4 +1,4 @@
-import { Slider, SliderThumb } from '@mui/material'
+import { Button, Slider, SliderThumb } from '@mui/material'
 import Player from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
 import useMainStore from '@renderer/store'
@@ -45,26 +45,29 @@ export default function Cut () {
         mainStore.videoPath ? (
           <Fragment>
             <div className="top">
-                <Player
-                  url={mainStore.videoPath}
-                />
+              <Player
+                url={mainStore.videoPath}
+              />
+            </div>
+            <div className="bottom">
+              <Timeline
+                duration={mainStore.duration}
+              >
+                <div className='image-preview-line'>
+                  <Slider
+                    value={time}
+                    onChange={handleTimeChange}
+                    slots={{
+                      track: Track,
+                      thumb: Thumb
+                    }}
+                  />
+                </div>
+              </Timeline>
+              <div className='action'>
+                <Button variant="contained" size="small">保存</Button>
               </div>
-              <div className="bottom">
-                <Timeline
-                  duration={mainStore.duration}
-                >
-                  <div className='image-preview-line'>
-                    <Slider
-                      value={time}
-                      onChange={handleTimeChange}
-                      slots={{
-                        track: Track,
-                        thumb: Thumb
-                      }}
-                    />
-                  </div>
-                </Timeline>
-              </div>
+            </div>
           </Fragment>
         ) : (
           <div className='no-data'>请点击左上角图标上传视频文件</div>
