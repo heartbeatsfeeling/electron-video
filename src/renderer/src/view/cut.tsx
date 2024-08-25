@@ -1,18 +1,21 @@
 import { Button, Slider, SliderThumb } from '@mui/material'
-import Player from '@renderer/components/player'
+import VPlayer from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
 import useMainStore from '@renderer/store'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
+import Player from 'video.js/dist/types/player'
 
 export default function Cut () {
   const mainStore = useMainStore()
+  const playerRef = useRef<null | { player: Player, video: HTMLVideoElement }>(null)
   const [time, setTime] = useState([0, 100])
   useEffect(() => {
     setTime([0, 100])
   }, [mainStore.videoPath])
   function handleTimeChange (_, d: number | number[]) {
     setTime(d as number[])
+    playerRef.current?.player.currentTime(d[0] * mainStore.duration * 0.01)
   }
   function Track (props) {
     const leftWidth = props.style.left
@@ -45,7 +48,8 @@ export default function Cut () {
         mainStore.videoPath ? (
           <Fragment>
             <div className="top">
-              <Player
+              <VPlayer
+                ref={playerRef}
                 url={mainStore.videoPath}
               />
             </div>

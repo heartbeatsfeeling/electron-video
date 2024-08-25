@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import videojs from 'video.js'
 import Player from 'video.js/dist/types/player'
 import 'video.js/dist/video-js.min.css'
@@ -6,7 +6,8 @@ import 'video.js/dist/video-js.min.css'
 interface Props {
   url: string
 }
-export default function VPlayer ({ url } : Props) {
+
+export default forwardRef(function Vplay (props: Props, ref) {
   const videoRef = useRef<null | HTMLVideoElement>(null)
   const playerRef = useRef<null | Player>(null)
   useEffect(() => {
@@ -14,15 +15,16 @@ export default function VPlayer ({ url } : Props) {
       playerRef.current = videojs(videoRef.current, {
         controls: true,
         sources: [{
-          src: url,
+          src: props.url,
           type: 'video/mp4'
         }]
       })
     }
-    return () => {
-      if (playerRef.current) {
-        playerRef.current = null
-      }
+  }, [])
+  useImperativeHandle(ref, () => {
+    return {
+      player: playerRef.current,
+      vide: playerRef.current
     }
   }, [])
   return (
@@ -30,4 +32,4 @@ export default function VPlayer ({ url } : Props) {
       <video ref={videoRef}/>
     </div>
   )
-}
+})
