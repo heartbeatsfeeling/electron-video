@@ -6,7 +6,10 @@ import 'video.js/dist/video-js.min.css'
 interface Props {
   url: string
 }
-
+export interface VPlayer {
+  player: Player,
+  video: HTMLVideoElement
+}
 export default forwardRef(function Vplay (props: Props, ref) {
   const videoRef = useRef<null | HTMLVideoElement>(null)
   const playerRef = useRef<null | Player>(null)
@@ -21,10 +24,10 @@ export default forwardRef(function Vplay (props: Props, ref) {
       })
     }
   }, [])
-  useImperativeHandle(ref, () => {
+  useImperativeHandle(ref, (): VPlayer => {
     return {
-      player: playerRef.current,
-      vide: playerRef.current
+      player: playerRef.current!,
+      video: videoRef.current!
     }
   }, [])
   return (
