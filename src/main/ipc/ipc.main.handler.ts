@@ -1,5 +1,5 @@
 import { app, dialog, ipcMain } from 'electron'
-import { selectFile } from '../services/file.services'
+import { buildVideo, cutVideo } from '../services/file.services'
 import { FileServicesDialog, FileServices } from '../../config/enum'
 import { basename, extname, join } from 'node:path'
 import { TEMP_DIR } from '../../config/config'
@@ -23,7 +23,7 @@ ipcMain.handle(FileServicesDialog.save_file, async (_, filePath: string) => {
   const appDir = join(app.getPath('userData'), TEMP_DIR)
   const res = await dialog.showSaveDialog(null as any, {
     title: '保存文件',
-    defaultPath: join(appDir, `${name}_cut.${ext}`),
+    defaultPath: join(appDir, `${name}_cut${ext}`),
     buttonLabel: '保存',
     filters: [
       { name: 'Text Files', extensions: ['mp4'] },
@@ -33,6 +33,9 @@ ipcMain.handle(FileServicesDialog.save_file, async (_, filePath: string) => {
   return res
 })
 
-ipcMain.handle(FileServices.decodeFile, (_, data: string) => {
-  return selectFile(data)
+ipcMain.handle(FileServices.decode_file, (_, data: string) => {
+  return buildVideo(data)
+})
+ipcMain.handle(FileServices.cut_file, (_, data: { path: string, start: number, end: number }) => {
+  return cutVideo(data)
 })

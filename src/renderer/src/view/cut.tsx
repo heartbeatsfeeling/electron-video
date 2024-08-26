@@ -1,4 +1,4 @@
-import { FileServicesDialog } from '@/config/enum'
+import { FileServices, FileServicesDialog } from '@/config/enum'
 import { Button, Slider, SliderThumb } from '@mui/material'
 import VPlay, { VPlayer } from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
@@ -12,7 +12,7 @@ export default function Cut () {
   const playerRef = useRef<null | VPlayer>(null)
   const [time, setTime] = useState([0, 100])
   const [enableSave, setEnableSave] = useState(false)
-  const [saveing, setSaveIng] = useState(false)
+  const [saveing, setsaveIng] = useState(false)
   useEffect(() => {
     setTime([0, 100])
   }, [mainStore.videoPath])
@@ -50,7 +50,15 @@ export default function Cut () {
   }
   async function handleSave () {
     const res = await window.electron.ipcRenderer.invoke(FileServicesDialog.save_file, mainStore.videoPath)
-    console.log(res)
+    if (res?.filePath) {
+      setsaveIng(true)
+      const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
+        path: res.filePath,
+        start: mainStore.duration * time[0] * 0.01,
+        end: mainStore.duration * time[1] * 0.01
+      })
+      setsaveIng(false)
+    }
   }
   return (
     <div className="cut">

@@ -9,5 +9,6 @@ export enum FileServices {
   /**
    * 解码文件
    */
-  decodeFile = 'decodeFile'
+  decode_file = 'decode_file',
+  cut_file = 'cut_file'
 }

@@ -9,10 +9,10 @@ import { basename, join } from 'node:path'
 ffmpeg.setFfmpegPath(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath.path)
 /**
- * 选择文体
+ * 解析视频文件
  * @returns Promise<Electron.OpenDialogReturnValue>
  */
-export async function selectFile (filePath: string) {
+export async function buildVideo (filePath: string) {
   const fileSizeInBytes = statSync(filePath).size
   const maxSizeInBytes = MAX_FILE_SIZE
   if (fileSizeInBytes > maxSizeInBytes) {
@@ -89,4 +89,8 @@ export async function selectFile (filePath: string) {
     image: `${HOST}:${PORT}/files/${basename(files[1])}?t=${Date.now()}`,
     bgImage: `${HOST}:${PORT}/files/${basename(bgImage)}?t=${Date.now()}`
   }
+}
+export async function cutVideo (data: { path: string, start: number, end: number }) {
+  console.log(data)
+  return true
 }
