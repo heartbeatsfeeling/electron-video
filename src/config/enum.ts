@@ -2,7 +2,8 @@ export enum FileServicesDialog {
   /**
    * 选择文件
    */
-  select_file = 'dialog:select-file'
+  select_file = 'dialog:select-file',
+  save_file = 'dialog:save-file'
 }
 export enum FileServices {
   /**

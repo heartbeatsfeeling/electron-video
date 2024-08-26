@@ -1,6 +1,8 @@
-import { dialog, ipcMain } from 'electron'
-import { selectFile } from '../services'
+import { app, dialog, ipcMain } from 'electron'
+import { selectFile } from '../services/file.services'
 import { FileServicesDialog, FileServices } from '../../config/enum'
+import { basename, extname, join } from 'node:path'
+import { TEMP_DIR } from '../../config/config'
 
 ipcMain.handle(FileServicesDialog.select_file, async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -10,11 +12,25 @@ ipcMain.handle(FileServicesDialog.select_file, async () => {
     ],
     properties: ['openFile']
   })
-  console.time('选文件')
   if (canceled) {
     return null
   }
   return filePaths[0]
+})
+ipcMain.handle(FileServicesDialog.save_file, async (_, filePath: string) => {
+  const name = basename(filePath).split('.')[0]
+  const ext = extname(filePath).split('?')[0]
+  const appDir = join(app.getPath('userData'), TEMP_DIR)
+  const res = await dialog.showSaveDialog(null as any, {
+    title: '保存文件',
+    defaultPath: join(appDir, `${name}_cut.${ext}`),
+    buttonLabel: '保存',
+    filters: [
+      { name: 'Text Files', extensions: ['mp4'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  })
+  return res
 })
 
 ipcMain.handle(FileServices.decodeFile, (_, data: string) => {

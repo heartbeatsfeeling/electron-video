@@ -1,17 +1,26 @@
+import { FileServicesDialog } from '@/config/enum'
 import { Button, Slider, SliderThumb } from '@mui/material'
 import VPlay, { VPlayer } from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
 import useMainStore from '@renderer/store'
 import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function Cut () {
   const mainStore = useMainStore()
   const playerRef = useRef<null | VPlayer>(null)
   const [time, setTime] = useState([0, 100])
+  const [enableSave, setEnableSave] = useState(false)
+  const [saveing, setSaveIng] = useState(false)
   useEffect(() => {
     setTime([0, 100])
   }, [mainStore.videoPath])
+  useEffect(() => {
+    setEnableSave(
+      time.join('-') === '0-100'
+    )
+  }, [time])
   function handleTimeChange (_, d: number | number[]) {
     setTime(d as number[])
     playerRef.current?.player.currentTime(d[0] * mainStore.duration * 0.01)
@@ -38,6 +47,10 @@ export default function Cut () {
         <span></span>
       </SliderThumb>
     )
+  }
+  async function handleSave () {
+    const res = await window.electron.ipcRenderer.invoke(FileServicesDialog.save_file, mainStore.videoPath)
+    console.log(res)
   }
   return (
     <div className="cut">
@@ -68,7 +81,18 @@ export default function Cut () {
                 </div>
               </Timeline>
               <div className='action'>
-                <Button variant="contained" size="small">保存</Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={enableSave || saveing}
+                  onClick={handleSave}
+                >
+                  {saveing ? (
+                    <CircularProgress size={'20'}></CircularProgress>
+                  ) : (
+                    '保存'
+                  )}
+                </Button>
               </div>
             </div>
           </Fragment>
