@@ -1,11 +1,12 @@
 import { FileServices, FileServicesDialog } from '@/config/enum'
-import { Button, Slider, SliderThumb } from '@mui/material'
+import { Button, duration, Slider, SliderThumb } from '@mui/material'
 import VPlay, { VPlayer } from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
 import useMainStore from '@renderer/store'
 import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 import CircularProgress from '@mui/material/CircularProgress'
+import { format } from 'date-fns'
 
 export default function Cut () {
   const mainStore = useMainStore()
@@ -52,11 +53,17 @@ export default function Cut () {
     const res = await window.electron.ipcRenderer.invoke(FileServicesDialog.save_file, mainStore.videoPath)
     if (res?.filePath) {
       setsaveIng(true)
-      const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
-        path: res.filePath,
-        start: mainStore.duration * time[0] * 0.01,
-        end: mainStore.duration * time[1] * 0.01
-      })
+      const startTime = mainStore.duration * time[0] * 0.01
+      const endTime = mainStore.duration * time[1] * 0.01
+      const duration = endTime - startTime
+      console.log(startTime, format(startTime * 1000, 'HH:mm:ss'))
+      // const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
+      //   outPath: res.filePath,
+      //   videoPath: mainStore.videoPath,
+      //   startTime,
+      //   duration: mainStore.duration - startTime
+      // })
+      // console.log(s)
       setsaveIng(false)
     }
   }

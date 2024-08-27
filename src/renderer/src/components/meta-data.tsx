@@ -11,7 +11,6 @@ export default function MetaData () {
     if (filePath) {
       mainStore.setBuilding(true)
       const res = await window.electron.ipcRenderer.invoke(FileServices.decode_file, filePath)
-      console.log(res.duration)
       if (res) {
         mainStore.setVideoPath(res.video)
         mainStore.setImage(res.image)

@@ -13,7 +13,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    'multiline-ternary': 'off'
+    'multiline-ternary': 'off',
+    'prefer-promise-reject-errors': 'off'
   },
   env: {
     browser: true,

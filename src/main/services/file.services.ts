@@ -5,6 +5,7 @@ import ffmpeg from 'fluent-ffmpeg'
 import ffmpegPath from 'ffmpeg-static'
 import ffprobePath from 'ffprobe-static'
 import { basename, join } from 'node:path'
+import { CutParams } from '../../../type/services'
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath.path)
@@ -90,7 +91,32 @@ export async function buildVideo (filePath: string) {
     bgImage: `${HOST}:${PORT}/files/${basename(bgImage)}?t=${Date.now()}`
   }
 }
-export async function cutVideo (data: { path: string, start: number, end: number }) {
-  console.log(data)
-  return true
+export async function cutVideo (data: CutParams) {
+  const res = {
+    status: true,
+    msg: ''
+  }
+  if (existsSync(data.videoPath)) {
+    const r = await new Promise<{ status: boolean, msg: string }>((resolve, reject) => {
+      ffmpeg(data.videoPath)
+        .setStartTime(data.startTime)
+        .setDuration(data.duration)
+        .output(data.videoPath)
+        .on('end', function () {
+          resolve({ status: true, msg: '' })
+          console.log('视频截取完成')
+        })
+        .on('error', function (err) {
+          reject({ status: false, msg: err.message })
+          console.error('视频截取失败: ' + err.message)
+        })
+        .run()
+      res.status = r.status
+      res.msg = r.msg
+    })
+  } else {
+    res.status = false
+    res.msg = '文件不存在'
+  }
+  return res
 }
