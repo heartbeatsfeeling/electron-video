@@ -96,6 +96,7 @@ export async function cutVideo (data: CutParams) {
     status: true,
     msg: ''
   }
+  console.log(data)
   if (existsSync(data.videoPath)) {
     const r = await new Promise<{ status: boolean, msg: string }>((resolve, reject) => {
       ffmpeg(data.videoPath)

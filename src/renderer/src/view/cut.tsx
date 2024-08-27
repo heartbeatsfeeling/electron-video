@@ -6,7 +6,7 @@ import useMainStore from '@renderer/store'
 import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 import CircularProgress from '@mui/material/CircularProgress'
-import { format } from 'date-fns'
+import { format, intervalToDuration } from 'date-fns'
 
 export default function Cut () {
   const mainStore = useMainStore()
@@ -55,15 +55,19 @@ export default function Cut () {
       setsaveIng(true)
       const startTime = mainStore.duration * time[0] * 0.01
       const endTime = mainStore.duration * time[1] * 0.01
-      const duration = endTime - startTime
-      console.log(startTime, format(startTime * 1000, 'HH:mm:ss'))
-      // const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
-      //   outPath: res.filePath,
-      //   videoPath: mainStore.videoPath,
-      //   startTime,
-      //   duration: mainStore.duration - startTime
-      // })
-      // console.log(s)
+      const duration = intervalToDuration({ start: 0, end: startTime * 1000 })
+      const formattedTime = [
+        String(duration.hours || 0).padStart(2, '0'),
+        String(duration.minutes || 0).padStart(2, '0'),
+        String(duration.seconds || 0).padStart(2, '0')
+      ].join(':')
+      const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
+        outPath: res.filePath,
+        videoPath: mainStore.videoPath,
+        startTime: formattedTime,
+        duration: endTime - startTime
+      })
+      console.log(s)
       setsaveIng(false)
     }
   }
