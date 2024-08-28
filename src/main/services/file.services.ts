@@ -103,6 +103,7 @@ export async function cutVideo (data: CutParams) {
       ffmpeg(data.originVideoPath)
         .setStartTime(data.startTime)
         .setDuration(data.duration)
+        .outputOptions('-c copy') // 使用 copy 编解码器
         .output(data.outPath)
         .on('end', function () {
           resolve({ status: true, msg: '' })
