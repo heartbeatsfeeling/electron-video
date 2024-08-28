@@ -1,6 +1,6 @@
 export interface CutParams {
   outPath: string
-  videoPath: string
+  originVideoPath: string
   startTime: number
   duration: number
 }

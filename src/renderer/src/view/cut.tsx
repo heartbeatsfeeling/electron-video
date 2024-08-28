@@ -6,7 +6,7 @@ import useMainStore from '@renderer/store'
 import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 import CircularProgress from '@mui/material/CircularProgress'
-import { format, intervalToDuration } from 'date-fns'
+import { intervalToDuration } from 'date-fns'
 
 export default function Cut () {
   const mainStore = useMainStore()
@@ -63,7 +63,7 @@ export default function Cut () {
       ].join(':')
       const s = await window.electron.ipcRenderer.invoke(FileServices.cut_file, {
         outPath: res.filePath,
-        videoPath: mainStore.videoPath,
+        originVideoPath: mainStore.originVideoPath,
         startTime: formattedTime,
         duration: endTime - startTime
       })
@@ -107,7 +107,7 @@ export default function Cut () {
                   onClick={handleSave}
                 >
                   {saveing ? (
-                    <CircularProgress size={'20'}></CircularProgress>
+                    <CircularProgress size={20} color="success" />
                   ) : (
                     '保存'
                   )}

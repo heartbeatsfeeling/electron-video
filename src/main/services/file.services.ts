@@ -86,7 +86,8 @@ export async function buildVideo (filePath: string) {
   return {
     duration: metadata.format.duration,
     size: metadata.format.size,
-    video: `${HOST}:${PORT}/files/${basename(filePath)}?t=${Date.now()}`,
+    originVideoPath: join(appDir, basename(filePath)),
+    videoPath: `${HOST}:${PORT}/files/${basename(filePath)}?t=${Date.now()}`,
     image: `${HOST}:${PORT}/files/${basename(files[1])}?t=${Date.now()}`,
     bgImage: `${HOST}:${PORT}/files/${basename(bgImage)}?t=${Date.now()}`
   }
@@ -96,28 +97,29 @@ export async function cutVideo (data: CutParams) {
     status: true,
     msg: ''
   }
-  console.log(data)
-  if (existsSync(data.videoPath)) {
+  console.time('cut')
+  if (existsSync(data.originVideoPath)) {
     const r = await new Promise<{ status: boolean, msg: string }>((resolve, reject) => {
-      ffmpeg(data.videoPath)
+      ffmpeg(data.originVideoPath)
         .setStartTime(data.startTime)
         .setDuration(data.duration)
-        .output(data.videoPath)
+        .output(data.outPath)
         .on('end', function () {
           resolve({ status: true, msg: '' })
-          console.log('视频截取完成')
+          console.log('cut success')
         })
         .on('error', function (err) {
           reject({ status: false, msg: err.message })
-          console.error('视频截取失败: ' + err.message)
+          console.error('error: ' + err.message)
         })
         .run()
-      res.status = r.status
-      res.msg = r.msg
     })
+    res.status = r.status
+    res.msg = r.msg
   } else {
     res.status = false
     res.msg = '文件不存在'
   }
+  console.timeEnd('cut')
   return res
 }

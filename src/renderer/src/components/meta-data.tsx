@@ -12,11 +12,13 @@ export default function MetaData () {
       mainStore.setBuilding(true)
       const res = await window.electron.ipcRenderer.invoke(FileServices.decode_file, filePath)
       if (res) {
-        mainStore.setVideoPath(res.video)
+        mainStore.setVideoPath(res.videoPath)
         mainStore.setImage(res.image)
         mainStore.setBgImage(res.bgImage)
         mainStore.setDuration(res.duration)
+        mainStore.setOriginVideoPath(res.originVideoPath)
       }
+      console.log(res)
       mainStore.setBuilding(false)
     }
   }
