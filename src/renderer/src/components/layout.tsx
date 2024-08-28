@@ -5,10 +5,12 @@ import ContentCutIcon from '@mui/icons-material/ContentCut'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TransformIcon from '@mui/icons-material/Transform'
 import MetaData from './meta-data'
+import Message from './message'
 
 export default function Layout () {
   return (
     <Fragment>
+      <Message />
       <header></header>
       <div className='wrapper'>
         <div className="lnb">
