@@ -1,4 +1,4 @@
-import { FileServices, FileServicesDialog } from '@/config/enum'
+import { Events, FileServices, FileServicesDialog } from '@/config/enum'
 import { Button, duration, Slider, SliderThumb } from '@mui/material'
 import VPlay, { VPlayer } from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 import CircularProgress from '@mui/material/CircularProgress'
 import { intervalToDuration } from 'date-fns'
+import emitter from '@/config/mitt'
 
 export default function Cut () {
   const mainStore = useMainStore()
@@ -67,7 +68,17 @@ export default function Cut () {
         startTime: formattedTime,
         duration: endTime - startTime
       })
-      console.log(s)
+      if (s.status) {
+        emitter.emit(Events.messageOpen, {
+          message: '裁剪成功',
+          variant: 'success'
+        })
+      } else {
+        emitter.emit(Events.messageOpen, {
+          message: '裁剪失败',
+          variant: 'error'
+        })
+      }
       setsaveIng(false)
     }
   }

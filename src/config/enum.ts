@@ -12,7 +12,13 @@ export enum FileServices {
   decode_file = 'decode_file',
   cut_file = 'cut_file'
 }
-export enum MitteVENTS {
-  messageOpen = 'messageOpen',
-  messageClose = 'messageClose'
+export enum Events {
+  /**
+   * 打开消息提示
+   */
+  messageOpen = 'message:open',
+  /**
+   * 关闭消息提示
+   */
+  messageClose = 'message:close'
 }

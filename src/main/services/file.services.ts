@@ -5,7 +5,7 @@ import ffmpeg from 'fluent-ffmpeg'
 import ffmpegPath from 'ffmpeg-static'
 import ffprobePath from 'ffprobe-static'
 import { basename, join } from 'node:path'
-import { CutParams } from '../../../type/services'
+import { CutParams } from '../../../types/services'
 
 ffmpeg.setFfmpegPath(ffmpegPath)
 ffmpeg.setFfprobePath(ffprobePath.path)

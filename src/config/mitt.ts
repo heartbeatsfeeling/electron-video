@@ -1,10 +1,4 @@
 import mitt from 'mitt'
-import { Events } from 'type/mitt'
-const emitter = mitt<Events>()
+import { MittEvents } from '#/mitt'
+const emitter = mitt<MittEvents>()
 export default emitter
-
-emitter.on('messageOpen', () => {
-//
-})
-
-emitter.emit('messageOpen', '111')

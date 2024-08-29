@@ -5,7 +5,7 @@
     "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts",
     "src/config/**/*",
-    "type/**/*"
+    "types/**/*"
   ],
   "compilerOptions": {
     "composite": true,
@@ -23,11 +23,11 @@
       "@renderer/*": [
         "src/renderer/src/*"
       ],
-      "@/type": [
-        "src/*"
-      ],
       "@/*": [
         "src/*"
+      ],
+      "#/*": [
+        "types/*"
       ]
     }
   }

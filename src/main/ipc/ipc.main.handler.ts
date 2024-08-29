@@ -3,7 +3,7 @@ import { buildVideo, cutVideo } from '../services/file.services'
 import { FileServicesDialog, FileServices } from '../../config/enum'
 import { basename, extname, join } from 'node:path'
 import { TEMP_DIR } from '../../config/config'
-import { CutParams } from '../../../type/services'
+import { CutParams } from '../../../types/services'
 
 ipcMain.handle(FileServicesDialog.select_file, async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
