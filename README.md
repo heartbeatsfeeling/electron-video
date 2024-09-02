@@ -28,3 +28,9 @@ $ npm run build:mac
 # For Linux
 $ npm run build:linux
 ```
+
+### 未来计划
+
+- [x] 视频剪切功能
+- [ ] 字幕
+- [ ] 视频打码
