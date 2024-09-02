@@ -1,6 +1,6 @@
 # electron-video
 
-An Electron application with React and TypeScript
+使用election 开发的编辑视频工具
 
 ## Project Setup
 
