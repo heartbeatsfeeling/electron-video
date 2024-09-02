@@ -25,7 +25,7 @@ function Toast () {
     }
   }, [])
   return (
-    <SnackbarProvider></SnackbarProvider>
+    null
   )
 }
 export default function Message () {
