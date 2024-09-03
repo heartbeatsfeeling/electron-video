@@ -23,9 +23,9 @@ export default function Cut () {
       time.join('-') === '0-100'
     )
   }, [time])
-  function handleTimeChange (_, d: number | number[]) {
+  function handleTimeChange (_, d: number | number[], index: number) {
     setTime(d as number[])
-    playerRef.current?.player.currentTime(d[0] * mainStore.duration * 0.01)
+    playerRef.current?.player.currentTime(d[index] * mainStore.duration * 0.01)
   }
   function Track (props) {
     const leftWidth = props.style.left
