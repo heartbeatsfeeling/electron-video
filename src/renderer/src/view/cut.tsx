@@ -1,6 +1,6 @@
 import { Events, FileServices, FileServicesDialog } from '@/config/enum'
-import { Button, duration, Slider, SliderThumb } from '@mui/material'
-import VPlay, { VPlayer } from '@renderer/components/player'
+import { Button, Slider, SliderThumb } from '@mui/material'
+import VPlay from '@renderer/components/player'
 import Timeline from '@renderer/components/timeline'
 import useMainStore from '@renderer/store'
 import { useEffect, useRef, useState } from 'react'
@@ -8,12 +8,14 @@ import { Fragment } from 'react/jsx-runtime'
 import CircularProgress from '@mui/material/CircularProgress'
 import { intervalToDuration } from 'date-fns'
 import emitter from '@/config/mitt'
+import Player from 'video.js/dist/types/player'
 
 export default function Cut () {
   const mainStore = useMainStore()
-  const playerRef = useRef<null | VPlayer>(null)
+  const player = useRef<null | Player>(null)
   const [time, setTime] = useState([0, 100])
   const [enableSave, setEnableSave] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
   const [saveing, setsaveIng] = useState(false)
   useEffect(() => {
     setTime([0, 100])
@@ -25,7 +27,7 @@ export default function Cut () {
   }, [time])
   function handleTimeChange (_, d: number | number[], index: number) {
     setTime(d as number[])
-    playerRef.current?.player.currentTime(d[index] * mainStore.duration * 0.01)
+    player.current?.currentTime(d[index] * mainStore.duration * 0.01)
   }
   function Track (props) {
     const leftWidth = props.style.left
@@ -49,6 +51,14 @@ export default function Cut () {
         <span></span>
       </SliderThumb>
     )
+  }
+  function handlePlayerReady (p: Player) {
+    player.current = p
+    p.on('timeupdate', () => {
+      setCurrentTime(
+        p.currentTime() ?? 0
+      )
+    })
   }
   async function handleSave () {
     const res = await window.electron.ipcRenderer.invoke(FileServicesDialog.save_file, mainStore.videoPath)
@@ -91,8 +101,8 @@ export default function Cut () {
           <Fragment>
             <div className="top">
               <VPlay
-                ref={playerRef}
                 url={mainStore.videoPath}
+                onReady={handlePlayerReady}
               />
             </div>
             <div className="bottom">

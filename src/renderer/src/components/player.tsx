@@ -5,34 +5,42 @@ import 'video.js/dist/video-js.min.css'
 
 interface Props {
   url: string
-}
-export interface VPlayer {
-  player: Player,
-  video: HTMLVideoElement
+  onReady: (player: Player) => void
 }
 export default forwardRef(function Vplay (props: Props, ref) {
-  const videoRef = useRef<null | HTMLVideoElement>(null)
+  const videoRef = useRef<null | HTMLDivElement>(null)
   const playerRef = useRef<null | Player>(null)
   useEffect(() => {
-    if (videoRef.current) {
-      playerRef.current = videojs(videoRef.current, {
+    if (!playerRef.current) {
+      const videoElement = document.createElement('video-js')
+      videoElement.classList.add('vjs-big-play-centered')
+      videoRef.current!.appendChild(videoElement)
+      const extName = props.url.split('?')[0].split('.').pop()
+      playerRef.current = videojs(videoElement, {
         controls: true,
         sources: [{
           src: props.url,
-          type: 'video/mp4'
+          type: `video/${extName}`
         }]
+      }, () => {
+        props.onReady?.(playerRef.current!)
       })
+    } else {
+      const player = playerRef.current
+      player.autoplay(false)
+      player.src(props.url)
     }
   }, [])
-  useImperativeHandle(ref, (): VPlayer => {
-    return {
-      player: playerRef.current!,
-      video: videoRef.current!
+  useEffect(() => {
+    const player = playerRef.current
+    return () => {
+      if (player && !player.isDisposed()) {
+        player.dispose()
+        playerRef.current = null
+      }
     }
-  }, [])
+  }, [playerRef])
   return (
-    <div className="video video-js">
-      <video ref={videoRef}/>
-    </div>
+    <div className="video" ref={videoRef}></div>
   )
 })

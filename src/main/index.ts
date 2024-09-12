@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -7,11 +7,14 @@ import createHttpService from './services/http.services'
 
 function createWindow (): void {
   // Create the browser window.
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  const windowWidth = Math.floor(width * 0.8)
+  const windowHeight = Math.floor(height * 0.9)
   const mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    minWidth: 1000,
-    minHeight: 800,
+    width: windowWidth,
+    height: windowHeight,
+    minWidth: windowWidth,
+    minHeight: windowHeight,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
