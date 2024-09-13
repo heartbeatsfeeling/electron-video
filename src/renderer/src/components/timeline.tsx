@@ -49,12 +49,19 @@ export default function Timeline (props: Props) {
         ref={timelineRef}
       >
         <div className="time-line-wrapper">
-          <div className="time-line-rule" style={{ marginRight: `-${overRight * 100}%` }}>
+          <div className="time-text-rule" style={{ marginRight: `-${overRight * 100}%` }}>
             {timeline.map((_, index) => (
-              <div className="time-line-item" key={index}>
+              <div className="time-text-item" key={index}>
                 <span className="text">{formatTime(index * step)}</span>
               </div>
             ))}
+          </div>
+          <div className="time-line-rule-wrapper">
+            <div className="time-line-rule" style={{ marginRight: `-${overRight * 100}%` }}>
+              {timeline.map((_, index) => (
+                <div className="time-line-item" key={index}></div>
+              ))}
+            </div>
           </div>
         </div>
         {props.children}
