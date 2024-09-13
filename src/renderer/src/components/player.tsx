@@ -13,7 +13,6 @@ export default forwardRef(function Vplay (props: Props, ref) {
   useEffect(() => {
     if (!playerRef.current) {
       const videoElement = document.createElement('video-js')
-      videoElement.classList.add('vjs-big-play-centered')
       videoRef.current!.appendChild(videoElement)
       const extName = props.url.split('?')[0].split('.').pop()
       playerRef.current = videojs(videoElement, {
